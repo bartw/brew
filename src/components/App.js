@@ -1,8 +1,11 @@
 import React from 'react';
+import AddClassGroup from '../containers/AddClassGroup';
+import ClassGroupList from '../containers/ClassGroupList';
 
 const App = () => (
     <div>
-        hello from my app
+        <AddClassGroup />
+        <ClassGroupList />
     </div>
 );
 

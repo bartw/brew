@@ -1,5 +1,8 @@
-const myApp = (state = {}, action) => {
-    return state;
-};
+import { combineReducers } from 'redux';
+import classGroups from './classGroups';
 
-export default myApp;
+const brewApp = combineReducers({
+    classGroups
+});
+
+export default brewApp;

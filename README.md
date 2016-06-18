@@ -210,3 +210,212 @@ render(
     document.getElementById('app')
 );
 ```
+
+## Input and display
+
+We're going to make a list of class groups.
+When you add a new class group it gets added to the list.
+
+```shell
+touch src/reducers/classGroups.js
+touch src/containers/AddClassGroup.js
+touch src/containers/ClassGroupList.js
+touch src/components/ClassGroups.js
+touch src/components/ClassGroup.js
+```
+
+src/index.js
+
+```js
+import 'babel-polyfill';
+import React from 'react';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import brewApp from './reducers';
+import App from './components/App';
+
+let store = createStore(brewApp);
+
+render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('app')
+);
+
+```
+
+src/actions/index.js
+
+```js
+let nextClassGroupId = 0;
+
+export const addClassGroup = (name) => {
+    return {
+        type: 'ADD_CLASSGROUP',
+        id: nextClassGroupId++,
+        name
+    };
+};
+```
+
+src/components/App.js
+
+```js
+import React from 'react';
+import AddClassGroup from '../containers/AddClassGroup';
+import ClassGroupList from '../containers/ClassGroupList';
+
+const App = () => (
+    <div>
+        <AddClassGroup />
+        <ClassGroupList />
+    </div>
+);
+
+export default App;
+```
+
+src/components/ClassGroup.js
+
+```js
+import React, { PropTypes } from 'react';
+
+const ClassGroup = ({ name }) => (
+    <li>
+        {name}
+    </li>
+);
+
+ClassGroup.propTypes = {
+    name: PropTypes.string.isRequired
+};
+
+export default ClassGroup;
+```
+
+src/components/ClassGroups.js
+
+```js
+import React, { PropTypes } from 'react';
+import ClassGroup from './ClassGroup';
+
+const ClassGroups = ({ classGroups }) => (
+    <ul>
+        {classGroups.map(classGroup =>
+            <ClassGroup
+                key={classGroup.id}
+                {...classGroup}
+                />
+        ) }
+    </ul>
+);
+
+ClassGroups.propTypes = {
+    classGroups: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    }).isRequired).isRequired
+};
+
+export default ClassGroups;
+```
+
+src/containers/AddClassGroup.js
+
+```js
+import React from 'react';
+import { connect } from 'react-redux';
+import { addClassGroup } from '../actions';
+
+let AddClassGroup = ({ dispatch }) => {
+    let input;
+
+    return (
+        <div>
+            <form onSubmit={e => {
+                e.preventDefault()
+                if (!input.value.trim()) {
+                    return
+                }
+                dispatch(addClassGroup(input.value))
+                input.value = ''
+            } }>
+                <input ref={node => {
+                    input = node
+                } } />
+                <button type="submit">
+                    Add Class Group
+                </button>
+            </form>
+        </div>
+    );
+};
+
+AddClassGroup = connect()(AddClassGroup);
+
+export default AddClassGroup;
+```
+
+src/containers/ClassGroupList.js
+
+```js
+import { connect } from 'react-redux';
+import ClassGroups from '../components/ClassGroups';
+
+const mapStateToProps = (state) => {
+    return {
+        classGroups: state.classGroups
+    };
+};
+
+const ClassGroupList = connect(
+    mapStateToProps
+)(ClassGroups);
+
+export default ClassGroupList;
+```
+
+src/reducers/classGroups.js
+
+```js
+const classGroup = (state, action) => {
+    switch (action.type) {
+        case 'ADD_CLASSGROUP':
+            return {
+                id: action.id,
+                name: action.name
+            };
+        default:
+            return state;
+    }
+};
+
+const classGroups = (state = [], action) => {
+    switch (action.type) {
+        case 'ADD_CLASSGROUP':
+            return [
+                ...state,
+                classGroup(undefined, action)
+            ];
+        default:
+            return state;
+    }
+};
+
+export default classGroups;
+```
+
+src/reducers/index.js
+
+```js
+import { combineReducers } from 'redux';
+import classGroups from './classGroups';
+
+const brewApp = combineReducers({
+    classGroups
+});
+
+export default brewApp;
+```

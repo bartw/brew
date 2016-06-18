@@ -3,10 +3,10 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import myApp from './reducers';
+import brewApp from './reducers';
 import App from './components/App';
 
-let store = createStore(myApp);
+let store = createStore(brewApp);
 
 render(
     <Provider store={store}>
