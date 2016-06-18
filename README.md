@@ -104,3 +104,45 @@ That went smooth. We can do our first commit.
 git add .
 git commit -m "hello world"
 ```
+
+## es6
+
+Since we're using babel already we can switch to es6.
+Just install the babel presets for es6.
+
+```shell
+npm install --save-dev babel-preset-es2015
+```
+
+Update the webpack.config.js to use the new presets.
+
+```js
+module.exports = {
+    entry: './src/main.js',
+    output: './src/bundle.js',
+    module: {
+        loaders: [
+            { test: /\.js$/, loader: 'babel-loader', query: { presets: ['es2015', 'react'] } }
+        ]
+    }
+};
+```
+
+And convert our main.js from es5 to es6.
+
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+ReactDOM.render(
+    <h1>Hello, world!</h1>,
+    document.getElementById('app')
+);
+``` 
+
+## Managing state with redux
+
+```shell
+npm install --save redux react-redux
+npm install --save-dev redux-devtools
+```
