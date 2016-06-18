@@ -150,6 +150,10 @@ ReactDOM.render(
 
 ## Managing state with redux
 
+If our app becomes more complex we will need to manage state.
+We'll try to use redux for this.
+Let's do some setup first.
+
 ```shell
 npm install --save redux react-redux
 npm install --save-dev redux-devtools
@@ -160,4 +164,49 @@ mkdir src/reducers
 touch src/actions/index.js
 touch src/components/App.js
 touch src/reducers/index.js
+```
+
+We'll make an app component in App.js to serve as the main component
+
+```js
+import React from 'react';
+
+const App = () => (
+    <div>
+        hello from my app
+    </div>
+);
+
+export default App;
+```
+
+And an empty reducer where we'll manage our state later in index.js in the reducers folder.
+
+```js
+const myApp = (state = {}, action) => {
+    return state;
+};
+
+export default myApp;
+```
+
+Now we update our main index.js to use our component and reducer.
+
+```js
+import 'babel-polyfill';
+import React from 'react';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import myApp from './reducers';
+import App from './components/App';
+
+let store = createStore(myApp);
+
+render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('app')
+);
 ```
