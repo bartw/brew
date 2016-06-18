@@ -101,4 +101,6 @@ npm start
 That went smooth. We can do our first commit.
 
 ```shell
+git add .
+git commit -m "hello world"
 ```
