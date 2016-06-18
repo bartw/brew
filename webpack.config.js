@@ -1,5 +1,5 @@
 module.exports = {
-    entry: './src/main.js',
+    entry: './src/index.js',
     output: './src/bundle.js',
     module: {
         loaders: [

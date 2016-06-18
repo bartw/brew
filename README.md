@@ -20,7 +20,7 @@ npm install --save react react-dom babel-preset-react babel-loader babel-core
 touch .gitignore
 touch webpack.config.js
 mkdir src
-touch src/main.js
+touch src/index.js
 touch src/index.html
 touch .babelrc
 ```
@@ -36,7 +36,7 @@ We'll also tell webpack to use babel to do some magic.
 
 ```js
 module.exports = {
-    entry: './src/main.js',
+    entry: './src/index.js',
     output: './src/bundle.js',
     module: {
         loaders: [
@@ -48,7 +48,7 @@ module.exports = {
 
 Babel needs to know we're doing react, we can confige this in the babelrc file.
 
-```
+```json
 { "presets": ["react"] }
 ```
 
@@ -72,7 +72,7 @@ Just a div to serve as an entry point and our generated javascript bundle.
 </html>
 ```
 
-Our main.js file renders hello world in the app div.
+Our index.js file renders hello world in the app div.
 
 ```js
 var React = require('react');
@@ -112,13 +112,14 @@ Just install the babel presets for es6.
 
 ```shell
 npm install --save-dev babel-preset-es2015
+npm install --save babel-polyfill
 ```
 
 Update the webpack.config.js to use the new presets.
 
 ```js
 module.exports = {
-    entry: './src/main.js',
+    entry: './src/index.js',
     output: './src/bundle.js',
     module: {
         loaders: [
@@ -128,9 +129,16 @@ module.exports = {
 };
 ```
 
-And convert our main.js from es5 to es6.
+Also update the babelrc file to use es6.
+
+```json
+{ "presets": ["es2015", "react"] }
+```
+
+And convert our index.js from es5 to es6.
 
 ```js
+import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -145,4 +153,11 @@ ReactDOM.render(
 ```shell
 npm install --save redux react-redux
 npm install --save-dev redux-devtools
+mkdir src/actions
+mkdir src/components
+mkdir src/containers
+mkdir src/reducers
+touch src/actions/index.js
+touch src/components/App.js
+touch src/reducers/index.js
 ```
